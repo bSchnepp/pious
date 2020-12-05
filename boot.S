@@ -23,10 +23,15 @@ maincore:
 	b kern_init
 	b loop
 	
-	
 .section ".bss"
+
+.global _bss_start
+.global _bss_end
+
+_bss_start:
 _kern_stack:
 
 .skip (16 * 1024)
 
 _kern_end:
+_bss_end:
