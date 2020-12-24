@@ -29,6 +29,17 @@ typedef enum BCM2711MailboxChannel
 }BCM2711MailboxChannel;
 
 
+typedef enum BCM2711Tagging
+{
+	TAGGING_FIRMWARE = (0x0000 << 16),
+	TAGGING_HARDWARE = (0x0001 << 16),
+	TAGGING_POWER = (0x0002 << 16),
+	TAGGING_CLOCK = (0x0002 << 16),
+	TAGGING_COMMAND_LINE = (0x0005 << 16),
+	TAGGING_SHARED = (0x0006 << 16),
+}BCM2711Tagging;
+
+
 int BCM_CallMailbox(void *Mailbox, BCM2711MailboxChannel Channel);
 
 #endif

@@ -1,19 +1,14 @@
-ENTRY(_start)
+ENTRY(_cpu_start)
 
 SECTIONS
 {
 	/* aarch64 load address */
 	. = 0x80000;
-	
-	
-	.earlytext :
-	{
-		*(.earlytext)
-	}
-	
+
 	.text :
 	{
-		*(.text*)
+		*(.text.early)
+		*(.text)
 	}
 	
 	.rodata :
@@ -26,9 +21,12 @@ SECTIONS
 		*(.data*)
 	}
 	
+	bss_begin = .;
 	.bss :
 	{
 		*(.bss*)
 	}
+	bss_end = .;
+	bss_size = bss_end - bss_begin;
 	
 }
