@@ -1,5 +1,11 @@
 #include <kernel/bcm2711/uart.h>
 
+/* clang-format: off */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 void kern_init(void)
 {
 	BCM_InitUART();
@@ -12,3 +18,8 @@ void kern_init(void)
 	{
 	}
 }
+
+#ifdef __cplusplus
+}
+#endif
+/* clang-format: on */
