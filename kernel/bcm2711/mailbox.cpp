@@ -1,6 +1,5 @@
-#include "gpio.h"
-#include "mailbox.h"
-
+#include <kernel/bcm2711/gpio.hpp>
+#include <kernel/bcm2711/mailbox.hpp>
 
 volatile unsigned int __attribute__((aligned(16))) Mailbox;
 

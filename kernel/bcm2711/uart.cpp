@@ -1,9 +1,9 @@
 #include <stdtypes.h>
-#include <kernel/mmio.h>
+#include <kernel/mmio.hpp>
 
-#include <kernel/bcm2711/mailbox.h>
-#include <kernel/bcm2711/uart.h>
-#include <kernel/bcm2711/gpio.h>
+#include <kernel/bcm2711/mailbox.hpp>
+#include <kernel/bcm2711/uart.hpp>
+#include <kernel/bcm2711/gpio.hpp>
 
 UINT32 BCM_UART_CalculateBaud(UINT32 Value)
 {

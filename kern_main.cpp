@@ -1,4 +1,4 @@
-#include <kernel/bcm2711/uart.h>
+#include <kernel/bcm2711/uart.hpp>
 
 /* clang-format: off */
 #ifdef __cplusplus

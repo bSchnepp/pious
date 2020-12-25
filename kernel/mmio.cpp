@@ -1,6 +1,6 @@
 #include <stdtypes.h>
 
-#include "mmio.h"
+#include <kernel/mmio.hpp>
 
 VOID WriteMMIOU64(UINT64 Addr, UINT64 Value)
 {

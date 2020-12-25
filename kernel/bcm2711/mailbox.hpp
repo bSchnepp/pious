@@ -1,5 +1,5 @@
 #include <stdtypes.h>
-#include <bcm2711/gpio.h>
+#include <kernel/bcm2711/gpio.hpp>
 
 #ifndef _BCM_2711_MAILBOX_H_
 #define _BCM_2711_MAILBOX_H_

@@ -1,8 +1,8 @@
 #include <stdtypes.h>
 
-#include <kernel/mmio.h>
+#include <kernel/mmio.hpp>
 
-#include <bcm2711/gpio.h>
+#include <bcm2711/gpio.hpp>
 
 static VOID CallGPIO(UINT16 PinNum, UINT32 Value, UINT32 Base, UINT32 FieldSz)
 {

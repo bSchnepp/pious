@@ -1,6 +1,6 @@
 #include <stdtypes.h>
 
-#include "gpio.h"
+#include <kernel/bcm2711/gpio.hpp>
 
 #ifndef _BCM2711_UART_H_
 #define _BCM2711_UART_H_
