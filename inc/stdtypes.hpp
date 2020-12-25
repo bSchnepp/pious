@@ -5,6 +5,12 @@
 #ifndef _STD_TYPES_H_
 #define _STD_TYPES_H_
 
+/* clang-format: off */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef uint64_t UINT64;
 typedef uint32_t UINT32;
 typedef uint16_t UINT16;
@@ -35,5 +41,10 @@ typedef UINT8 BOOL;
 #ifndef FALSE
 #define FALSE 0
 #endif
+
+#ifdef __cplusplus
+}
+#endif
+/* clang-format: off */
 
 #endif

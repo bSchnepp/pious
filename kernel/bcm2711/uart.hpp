@@ -1,4 +1,4 @@
-#include <stdtypes.h>
+#include <stdtypes.hpp>
 
 #include <kernel/bcm2711/gpio.hpp>
 

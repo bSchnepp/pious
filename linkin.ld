@@ -28,5 +28,7 @@ SECTIONS
 	}
 	bss_end = .;
 	bss_size = bss_end - bss_begin;
+
+	/DISCARD/ : { *(.comment) *(.gnu*) *(.note*) *(.eh_frame*) }
 	
 }

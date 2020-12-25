@@ -1,4 +1,4 @@
-#include <stdtypes.h>
+#include <stdtypes.hpp>
 
 #ifndef _PIOUS_MMIO_H_
 #define _PIOUS_MMIO_H_

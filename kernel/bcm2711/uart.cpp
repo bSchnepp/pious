@@ -1,4 +1,4 @@
-#include <stdtypes.h>
+#include <stdtypes.hpp>
 #include <kernel/mmio.hpp>
 
 #include <kernel/bcm2711/mailbox.hpp>
@@ -41,11 +41,6 @@ void BCM_InitUART()
 
 static void BCM2711_WriteChar(char Chr)
 {
-	
-	while (ReadMMIOS32(AUX_MU_LSR_REG) & (1 << 5))
-	{
-		/* Block until ready. */
-	}
 	WriteMMIOU32(AUX_MU_IO_REG, Chr);
 }
 

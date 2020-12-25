@@ -1,4 +1,4 @@
-#include <stdtypes.h>
+#include <stdtypes.hpp>
 
 #ifndef _BCM_2711_GPIO_H_
 #define _BCM_2711_GPIO_H_

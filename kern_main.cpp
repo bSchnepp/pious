@@ -1,4 +1,5 @@
 #include <kernel/bcm2711/uart.hpp>
+#include <kernel/bcm2711/fb.hpp>
 
 /* clang-format: off */
 #ifdef __cplusplus
@@ -8,12 +9,20 @@ extern "C"
 
 void kern_init(void)
 {
-	BCM_InitUART();
-	BCM2711_WriteUART("\n");
-	BCM2711_WriteUART("Hello, world!\n");
-	BCM2711_WriteUART("\n");
-	BCM2711_WriteUART("Hello, world!!\n");
-	BCM2711_WriteUART("\n");
+	PrepareFramebuffer(0);
+	UINT32 Index = 0;
+	for (;;)
+	{
+		for (UINT32 Col = 0; Col < 1920; ++Col)
+		{
+			for (UINT32 Row = 0; Row < 1080; ++Row)
+			{
+				WritePixel(Col, Row, (Index + Col));
+			}
+		}
+		Index++;
+	}
+
 	for (;;)
 	{
 	}
