@@ -89,8 +89,7 @@ typedef enum BCM2711PinFunc
 	BCM2711_GPIO_FUNC_ALT5 = 0b010,
 }BCM2711PinFunc;
 
-VOID SetGPIOFunction(UINT16 PinNumber, 
-	BCM2711PinUse Usage, BCM2711PinFunc PinFunc);
+VOID SetGPIOFunction(UINT16 PinNumber, BCM2711PinFunc PinFunc);
 
 
 

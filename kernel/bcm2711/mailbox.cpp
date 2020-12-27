@@ -1,13 +1,12 @@
-//#include <atomic>
+#include <kernel/mutex.hpp>
 
 #include <kernel/mmio.hpp>
 #include <kernel/bcm2711/gpio.hpp>
 #include <kernel/bcm2711/mailbox.hpp>
 
 
-//static std::atomic_bool MailboxAvailable;
-static bool MailboxAvailable = TRUE;
 static volatile UINT32 __attribute__((aligned(16))) Mailbox[36];
+static pious::mutex MailboxAvailable(Mailbox);
 
 UINT32 BCM_CallMailbox(BCM2711MailboxChannel Channel)
 {
@@ -38,21 +37,11 @@ UINT32 BCM_CallMailbox(BCM2711MailboxChannel Channel)
 
 volatile UINT32 *BorrowMailbox()
 {
-	bool Lock = true;
-	while (Lock == true)
-	{
-		MailboxAvailable = false;
-		break;
-	}
+	MailboxAvailable.lock();
 	return Mailbox;
 }
 
 VOID ReleaseMailbox()
 {
-	bool Lock = false;
-	while (Lock == false)
-	{
-		MailboxAvailable = true;
-		break;
-	}
+	MailboxAvailable.unlock();
 }

@@ -18,24 +18,24 @@ typedef enum FramebufferOrdering
 UINT32 VGAColors[] = 
 {
 	0x000000,
-	0x000088,
-	0x008800,
-	0x008888,
+	0x0000AA,
+	0x00AA00,
+	0x00AAAA,
 
-	0x880000,
-	0x880088,
-	0x885500,
-	0x888888,
-
+	0xAA0000,
+	0xAA00AA,
+	0xAA5500,
+	0xAAAAAA,
+	
 	0x555555,
 	0x5555FF,
 	0x55FF55,
 	0x55FFFF,
-
+	
 	0xFF5555,
 	0xFF55FF,
 	0xFFFF55,
-	0xFFFFFF,
+	0xFFFFFF
 };
 
 VOID PrepareFramebuffer(UINT8 DisplayIndex)
@@ -109,9 +109,9 @@ VOID PrepareFramebuffer(UINT8 DisplayIndex)
 }
 
 
-void WritePixel(UINT32 Col, UINT32 Row, UINT32 ColorIndex)
+void WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex)
 {
 	UINT32 *FB = (UINT32*)(CurFramebuffer);
 	UINT32 Offset = (Row * FramebufferPitch) + (Col * 4);
-	FB[Offset] = VGAColors[ColorIndex % 0xF];
+	FB[Offset] = VGAColors[ColorIndex & 0xF];
 }
