@@ -14,69 +14,39 @@ UINT32 BCM_UART_CalculateBaud(UINT32 Value)
 
 void BCM_InitUART()
 {
-	/* We need to borrow the mailbox. */
-	volatile UINT32 *Mailbox = BorrowMailbox();
+	WriteMMIOU32(AUX_ENABLES, 0x01);
 
-	/* Let's use the UART0 instead. */
-	/* Start by disabling the UART */
-	WriteMMIOU32(UART0_CTRL_REG, 0);
+	/* Disable everything for now */
+	WriteMMIOU32(AUX_MU_IER_REG, 0x00);
+	WriteMMIOU32(AUX_MU_CNTL_REG, 0x00);
 
+	/* Use 8-bit mode. FIXME: Try to avoid smashing the reserved parts? */
+	WriteMMIOU32(AUX_MU_LCR_REG, 0x03);
+	WriteMMIOU32(AUX_MU_MCR_REG, 0x00);
 
-	/* We'll need 9 fields. */
-	Mailbox[0] = 9 * sizeof(UINT32);
-	Mailbox[1] = BCM_MAILBOX_REQUEST;
-	Mailbox[2] = TAGGING_DETAILED_SETCLOCKRATE;
-	Mailbox[3] = 12; /* Entry is 12 bytes long */
-	Mailbox[4] = 8; /* Response is 8 */
-	Mailbox[5] = 2; /* UART0 clock is 2. */
-	Mailbox[6] = 4 * 1000 * 1000; /* 4Mhz clock */
-	Mailbox[7] = 0; /* Disable turbo */
-	Mailbox[8] = TAGGING_DETAILED_END;
+	/* Only bits 2:1 actually matter */
+	WriteMMIOU32(AUX_MU_IER_REG, 0x00);
+	WriteMMIOU32(AUX_MU_IIR_REG, 0xC6);
 
-	/* Call the mailbox. */
-	BCM_CallMailbox(MAILBOX_CHANNEL_PROPERTY_HOST);
+	/* Set the baud rate */
+	WriteMMIOU32(AUX_MU_BAUD_REG, BCM_UART_CalculateBaud(115200));
 
-	/* We want UART0. */
-	SetGPIOFunction(14, BCM2711_GPIO_FUNC_ALT0);
-	SetGPIOFunction(15, BCM2711_GPIO_FUNC_ALT0);
+	/* Ensure the correct GPIO functions are used. We use pins 14 and 15. */
+	SetGPIOFunction(14, BCM2711_GPIO_FUNC_ALT5);
+	SetGPIOFunction(15, BCM2711_GPIO_FUNC_ALT5);
 
-	/* Wipe out interrupts. */
-	UARTInterruptClear Ints;
-	Ints.Raw = 0x7FF;
-	WriteMMIOU32(UART0_INT_CLR_REG, Ints.Raw);
-
-	UARTIntBaudReg IntBaud;
-	IntBaud.IntBaud = 2;
-	WriteMMIOU32(UART0_INT_BAUD_REG, IntBaud.Raw);
-
-	UARTFractBaudReg FractBaud;
-	FractBaud.Fraction = 0b1011;
-	WriteMMIOU32(UART0_FRACT_BAUD_REG, FractBaud.Raw);
-
-	UARTLineControlReg LineCtrl;
-	LineCtrl.SPS = FALSE; /* Disable stick parity */
-	LineCtrl.WLEN = 0b11; /* 8 bit data */
-	WriteMMIOU32(UART0_LINE_CTRL_REG, LineCtrl.Raw);
-
-	/* Re-enable the UART. */
-	UARTControlReg Control;
-	Control.TXE = TRUE;
-	Control.RXE = TRUE;
-	Control.ENABLE = TRUE;
-	WriteMMIOU32(UART0_CTRL_REG, Control.Raw);
-		
-	/* Go ahead and release the mailbox. */
-	ReleaseMailbox();
+	/* Enable recieve and transmission */
+	WriteMMIOU32(AUX_MU_CNTL_REG, 0x03);
 }
 
 static void BCM2711_WriteChar(char Chr)
 {
-	UINT32 Unavailable = ReadMMIOU32(UART0_FLAG_REG) & 0x20;
+	UINT32 Unavailable = ReadMMIOU32(AUX_MU_STAT_REG) & 0x20;
 	while (Unavailable)
 	{
 		asm volatile("nop\n");
 	}
-	WriteMMIOU32(UART0_DATA_REG, Chr);
+	WriteMMIOU32(AUX_MU_IO_REG, Chr);
 }
 
 void BCM2711_WriteUART(const char *Msg)

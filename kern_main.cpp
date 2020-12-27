@@ -25,9 +25,10 @@ void kern_init(void)
 				UINT32 Color = Index + ((4 * Row) + (4 * Col) % 16);
 				WritePixel(Col, Row, Color);
 			}
+			BCM2711_WriteUART("Hello, world!\n");
 		}
+		BCM2711_WriteUART("Hi world!\r\n\r\n");
 		Index++;
-		BCM2711_WriteUART("H");
 	}
 
 	for (;;)
