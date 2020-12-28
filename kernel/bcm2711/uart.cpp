@@ -44,7 +44,7 @@ static void BCM2711_WriteChar(char Chr)
 	UINT32 Unavailable = ReadMMIOU32(AUX_MU_STAT_REG) & 0x20;
 	while (Unavailable)
 	{
-		asm volatile("nop\n");
+		Unavailable = ReadMMIOU32(AUX_MU_STAT_REG) & 0x20;
 	}
 	WriteMMIOU32(AUX_MU_IO_REG, Chr);
 }
