@@ -17,3 +17,18 @@ use it.
 
 As a result, to run pious, you must flash a real SD card and run it on
 a real Pi.
+
+## Necessary config.txt
+The options I use for config.txt are
+```
+dtparam=audio=on
+dtoverlay=vc4-fkms-v3d
+max_framebuffers=2
+arm_64bit=1
+enable_uart=1
+kernel=kernel8.img
+dtparam=i2c_arm=on
+dtparam=spi=on
+core_freq_min=500
+disable_overscan=1
+```
