@@ -1,4 +1,4 @@
-#include <kernel/mutex.hpp>
+#include <mutex.hpp>
 
 #include <kernel/mmio.hpp>
 #include <kernel/bcm2711/gpio.hpp>
