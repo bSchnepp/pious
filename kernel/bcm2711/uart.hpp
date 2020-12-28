@@ -1,5 +1,4 @@
 #include <stdtypes.hpp>
-
 #include <kernel/bcm2711/gpio.hpp>
 
 #ifndef _BCM2711_UART_H_
@@ -384,5 +383,6 @@ typedef struct UARTDR
 
 void BCM_InitUART(VOID);
 void BCM2711_WriteUART(const char *Msg);
+void BCM2711_WriteUARTChar(const char Chr);
 
 #endif

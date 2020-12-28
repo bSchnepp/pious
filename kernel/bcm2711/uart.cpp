@@ -55,12 +55,18 @@ void BCM2711_WriteUART(const char *Msg)
 	while (Msg[Index] != '\0')
 	{
 		UINT8 Cur = Msg[Index];
-		if (Cur == '\n')
-		{
-			BCM2711_WriteChar('\r');
-		}
-		BCM2711_WriteChar(Cur);
+		BCM2711_WriteUARTChar(Cur);
 		Index++;
 	}
 
+}
+
+void BCM2711_WriteUARTChar(const char Chr)
+{
+	/* TODO: Software FIFO buffer */
+	if (Chr == '\n')
+	{
+		BCM2711_WriteChar('\r');
+	}
+	BCM2711_WriteChar(Chr);
 }

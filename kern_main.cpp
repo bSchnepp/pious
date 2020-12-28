@@ -3,6 +3,8 @@
 #include <kernel/bcm2711/uart.hpp>
 #include <kernel/bcm2711/fb.hpp>
 
+#include <kern.h>
+
 /* clang-format: off */
 #ifdef __cplusplus
 extern "C"
@@ -12,8 +14,10 @@ extern "C"
 void kern_init(void)
 {
 	PrepareFramebuffer(0);
-
 	BCM_InitUART();
+
+	PIOUS_LOG("Kernel started. (VER: %d.%d.%d)\n",
+		PIOUS_VERSION_MAJOR, PIOUS_VERSION_MINOR, PIOUS_VERSION_PATCH);
 
 	UINT32 Index = 0;
 	for (;;)
@@ -22,11 +26,10 @@ void kern_init(void)
 		{
 			for (UINT32 Col = 0; Col < 1920; ++Col)
 			{
-				UINT32 Color = Index + ((4 * Row) + (4 * Col) % 16);
+				UINT32 Color = Index;
 				WritePixel(Col, Row, Color);
 			}
 		}
-		BCM2711_WriteUART("Hello, world!\n");
 		Index++;
 	}
 

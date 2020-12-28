@@ -1,0 +1,31 @@
+#ifndef _PIOUS_KERN_VER_H_
+#define _PIOUS_KERN_VER_H_
+
+/* clang-format: off */
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+#define PIOUS_VERSION_MAJOR @PIOUS_VERSION_MAJOR@
+#define PIOUS_VERSION_MINOR @PIOUS_VERSION_MINOR@
+#define PIOUS_VERSION_PATCH @PIOUS_VERSION_PATCH@
+
+#cmakedefine TARGET_SYSTEM
+#cmakedefine TARGET_SYSTEM_BCM2711 @TARGET_SYSTEM_BCM2711@
+
+#include <printf/printf.h>
+#if defined(TARGET_SYSTEM_BCM2711)
+#include <kernel/bcm2711/uart.hpp>
+#include <kernel/bcm2711/contrib.hpp>
+#define PIOUS_LOG(fmt, ...) printf((fmt), __VA_ARGS__) 
+#else
+#error Unsupported platform
+#endif
+
+#if defined(__cplusplus)
+}
+#endif
+/* clang-format: on */
+
+#endif
