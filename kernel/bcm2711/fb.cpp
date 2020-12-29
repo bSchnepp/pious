@@ -109,7 +109,7 @@ VOID PrepareFramebuffer(UINT8 DisplayIndex)
 }
 
 
-void WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex)
+void BCM_WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex)
 {
 	UINT32 *FB = (UINT32*)(CurFramebuffer);
 	UINT32 Offset = (Row * FramebufferPitch) + (Col * 4);

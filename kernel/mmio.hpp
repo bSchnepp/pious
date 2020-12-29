@@ -3,12 +3,6 @@
 #ifndef _PIOUS_MMIO_H_
 #define _PIOUS_MMIO_H_
 
-/* clang-format: off */
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 VOID WriteMMIOU64(UINT64 Addr, UINT64 Value);
 VOID WriteMMIOU32(UINT64 Addr, UINT32 Value);
 VOID WriteMMIOU16(UINT64 Addr, UINT16 Value);
@@ -28,10 +22,5 @@ INT64 ReadMMIOS64(UINT64 Addr);
 INT32 ReadMMIOS32(UINT64 Addr);
 INT16 ReadMMIOS16(UINT64 Addr);
 INT8  ReadMMIOS8(UINT64 Addr);
-
-#ifdef __cplusplus
-}
-#endif
-/* clang-format: off */
 
 #endif

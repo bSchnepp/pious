@@ -31,4 +31,5 @@ dtparam=i2c_arm=on
 dtparam=spi=on
 core_freq_min=500
 disable_overscan=1
+enable_gic=1
 ```

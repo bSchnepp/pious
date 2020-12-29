@@ -381,8 +381,13 @@ typedef struct UARTDR
 	};
 }__attribute__((__packed__)) UARTTDR;
 
-void BCM_InitUART(VOID);
+extern "C"
+{
+void BCM_InitUART();
+}
+
 void BCM2711_WriteUART(const char *Msg);
 void BCM2711_WriteUARTChar(const char Chr);
+
 
 #endif

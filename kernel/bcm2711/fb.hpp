@@ -9,7 +9,7 @@
 VOID PrepareFramebuffer(UINT8 DisplayIndex);
 
 
-void WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex);
+void BCM_WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex);
 
 
 #endif
