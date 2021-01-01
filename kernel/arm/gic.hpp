@@ -104,6 +104,8 @@ public:
 	VOID WriteGIC(GICClassType Type, 
 		GICRegisterOffsets Offset, UINT32 ArrayIndex, UINT32 Value);
 
+	VOID LIDT(VOID *Table);
+
 private:
 	UINT64 BaseAddress;
 };
