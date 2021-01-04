@@ -106,6 +106,11 @@ public:
 
 	VOID LIDT(VOID *Table);
 
+	VOID ToggleIRQ(BOOL Value);
+
+	VOID EnableInterrupt(UINT32 Interrupt);
+	VOID DisableInterrupt(UINT32 Interrupt);
+
 private:
 	UINT64 BaseAddress;
 };

@@ -6,7 +6,7 @@
 #ifndef _PIOUS_FB_H_
 #define _PIOUS_FB_H_
 
-VOID PrepareFramebuffer(UINT8 DisplayIndex);
+VOID BCM_PrepareFramebuffer(UINT8 DisplayIndex);
 
 
 void BCM_WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex);

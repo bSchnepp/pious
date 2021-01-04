@@ -38,7 +38,7 @@ UINT32 VGAColors[] =
 	0xFFFFFF
 };
 
-VOID PrepareFramebuffer(UINT8 DisplayIndex)
+VOID BCM_PrepareFramebuffer(UINT8 DisplayIndex)
 {
 	volatile UINT32 *Mailbox = BorrowMailbox();
 

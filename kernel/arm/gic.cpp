@@ -22,6 +22,46 @@
 pious::arm::GIC::GIC(UINT64 MMIOAddr)
 {
 	this->BaseAddress = MMIOAddr;
+
+	UINT32 NumInterrupts = (this->ReadGIC(
+		GIC_CLASS_DISTRIBUTOR, GICD_TYPER, 0) & 0x1F) + 1;
+
+	/* The actual number is 32 * (that). */
+	NumInterrupts *= 32;
+
+	for (UINT32 Index = 0; Index < NumInterrupts; ++Index)
+	{
+		/* Wipe out all the mappings. */
+		if (Index % 32 == 0)
+		{
+			this->WriteGIC(
+				GIC_CLASS_DISTRIBUTOR, 
+				GICD_ICENABLER, 
+				Index / 32, 
+				0xFFFFFFFF);
+
+			this->WriteGIC(
+				GIC_CLASS_DISTRIBUTOR, 
+				GICD_ISCENDR, 
+				Index / 32, 
+				0xFFFFFFFF);
+
+			/* Always send to CPU0 */
+			this->WriteGIC(
+				GIC_CLASS_DISTRIBUTOR, 
+				GICD_ITARGETSR, 
+				Index / 32, 
+				0x01010101);
+
+			this->WriteGIC(
+				GIC_CLASS_DISTRIBUTOR, 
+				GICD_ICACTIVER, 
+				Index / 32, 
+				0xFFFFFFFF);
+		}
+	}
+
+	this->WriteGIC(GIC_CLASS_CPU_INTERFACE, GICC_PMR, 0, 0xFF);
 }
 
 /**
@@ -90,6 +130,7 @@ VOID pious::arm::GIC::Enable()
 {
 	WriteMMIOS32(this->BaseAddress + GIC_CLASS_DISTRIBUTOR + GICD_CTLR, 1);
 	WriteMMIOS32(this->BaseAddress + GIC_CLASS_CPU_INTERFACE + GICC_CTLR, 1);
+	
 }
 
 /**
@@ -100,6 +141,7 @@ VOID pious::arm::GIC::Disable()
 {
 	WriteMMIOS32(this->BaseAddress + GIC_CLASS_DISTRIBUTOR + GICD_CTLR, 0);
 	WriteMMIOS32(this->BaseAddress + GIC_CLASS_CPU_INTERFACE + GICC_CTLR, 0);
+	
 }
 
 /**
@@ -111,5 +153,34 @@ VOID pious::arm::GIC::Disable()
  */
 VOID pious::arm::GIC::LIDT(VOID *Addr)
 {
-	asm volatile("msr vbar_el1, x0\n");
+	asm volatile("msr vbar_el1, %x[Addr]\n"
+		: [Addr]"+r"(Addr));
+}
+
+void pious::arm::GIC::ToggleIRQ(BOOL Value)
+{
+	if (Value)
+	{
+		asm volatile ("msr daifclr, #2\n");
+	} else {
+		asm volatile ("msr daifset, #2\n");
+	}
+}
+
+VOID pious::arm::GIC::EnableInterrupt(UINT32 Interrupt)
+{
+	UINT32 Interface = Interrupt / 32;
+	UINT32 IRQNumber = Interrupt % 32;
+
+	this->WriteGIC(GIC_CLASS_DISTRIBUTOR, 
+		GICD_ISENABLER, Interface, (1 << IRQNumber));
+}
+
+VOID pious::arm::GIC::DisableInterrupt(UINT32 Interrupt)
+{
+	UINT32 Interface = Interrupt / 32;
+	UINT32 IRQNumber = Interrupt % 32;
+
+	this->WriteGIC(GIC_CLASS_DISTRIBUTOR, 
+		GICD_ICENABLER, Interface, (1 << IRQNumber));
 }

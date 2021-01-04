@@ -33,6 +33,7 @@ endzeroloop:
 
 
 .macro DEFINE_ISR func
+.align 7	/* Must be aligned to 128 bytes, and NEVER EXCEED IT. */
 	/* 272 holds all the registers we'd need to store. */
 	sub sp, sp, #272
 	
@@ -60,18 +61,6 @@ endzeroloop:
 	mov x0, sp
 	bl \func
 	b exit_isr
-
-	/* See exit_isr for details. This is for alignment to 128 bytes. */
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
-	nop
 .endm
 
 
