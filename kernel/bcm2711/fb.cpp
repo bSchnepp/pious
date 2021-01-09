@@ -1,7 +1,11 @@
+#include <kern.h>
 #include <stdtypes.hpp>
 #include <kernel/bcm2711/fb.hpp>
 
 static UINT8 *CurFramebuffer = (UINT8*)NULLPTR;
+
+static UINT8 *Framebuffers[2];
+
 static UINT32 FramebufferWidth = 0;
 static UINT32 FramebufferHeight = 0;
 
@@ -38,7 +42,7 @@ UINT32 VGAColors[] =
 	0xFFFFFF
 };
 
-VOID PrepareFramebuffer(UINT8 DisplayIndex)
+VOID BCM_PrepareFramebuffer(UINT8 DisplayIndex)
 {
 	volatile UINT32 *Mailbox = BorrowMailbox();
 
@@ -102,14 +106,17 @@ VOID PrepareFramebuffer(UINT8 DisplayIndex)
 		FramebufferOrder = Mailbox[24];
 		FramebufferPitch = Mailbox[33];
 
-		CurFramebuffer = (UINT8*)(FramebufferPAddr);
+		Framebuffers[DisplayIndex % 2] = (UINT8*)(FramebufferPAddr);
+		CurFramebuffer = Framebuffers[DisplayIndex % 2];
 	}
+
+	PIOUS_LOG("Set up framebuffer of %d x %d\n", FramebufferWidth, FramebufferHeight);
 
 	ReleaseMailbox();
 }
 
 
-void WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex)
+void BCM_WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex)
 {
 	UINT32 *FB = (UINT32*)(CurFramebuffer);
 	UINT32 Offset = (Row * FramebufferPitch) + (Col * 4);

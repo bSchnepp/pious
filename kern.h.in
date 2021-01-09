@@ -15,7 +15,15 @@ extern "C"
 #cmakedefine TARGET_SYSTEM_BCM2711 @TARGET_SYSTEM_BCM2711@
 
 #include <printf/printf.h>
+
+#if defined(__cplusplus)
+}
+#endif
+
+#include <compiler.hpp>
+
 #if defined(TARGET_SYSTEM_BCM2711)
+#include <kernel/bcm2711/sys.hpp>
 #include <kernel/bcm2711/uart.hpp>
 #include <kernel/bcm2711/contrib.hpp>
 #define PIOUS_LOG(fmt, ...) printf((fmt), __VA_ARGS__) 
@@ -23,9 +31,6 @@ extern "C"
 #error Unsupported platform
 #endif
 
-#if defined(__cplusplus)
-}
-#endif
 /* clang-format: on */
 
 #endif

@@ -6,7 +6,7 @@
 
 
 static volatile UINT32 __attribute__((aligned(16))) Mailbox[36];
-static pious::mutex MailboxAvailable(Mailbox);
+static pious::mutex MailboxAvailable = false;
 
 UINT32 BCM_CallMailbox(BCM2711MailboxChannel Channel)
 {
@@ -37,11 +37,11 @@ UINT32 BCM_CallMailbox(BCM2711MailboxChannel Channel)
 
 volatile UINT32 *BorrowMailbox()
 {
-	MailboxAvailable.lock();
+	pious::lock(&MailboxAvailable);
 	return Mailbox;
 }
 
 VOID ReleaseMailbox()
 {
-	MailboxAvailable.unlock();
+	pious::unlock(&MailboxAvailable);
 }
