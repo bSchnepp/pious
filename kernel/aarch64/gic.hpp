@@ -87,6 +87,9 @@ typedef enum GICRegisterOffsets
 
 VOID GICSetBaseAddr(UINT64 Address);
 
+VOID GICInit();
+VOID GICInitCore();
+
 VOID GICEnable();
 VOID GICDisable();
 
@@ -101,6 +104,8 @@ VOID GICLoadInterruptTable(VOID *Table);
 VOID GICEnableInterrupt(UINT32 Interrupt);
 VOID GICDisableInterrupt(UINT32 Interrupt);
 VOID GICAckInterrupt(UINT32 Interrupt);
+
+UINT8 GICGetNumCPUs();
 
 
 

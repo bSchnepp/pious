@@ -17,7 +17,9 @@ extern "C" void InitSystem()
 	UINT64 Addr = BCM2711_PERIPHERAL_BASE + 0x1840000;
 	pious::arm::GICSetBaseAddr(Addr);
 	PIOUS_LOG("gic base adddress set to %u\n", Addr);
-	pious::arm::GICEnable();
+	pious::arm::GICInit();
+
+//	pious::arm::GICEnable();
 
 //	pious::arm::GICEnableInterrupt(27);
 //	pious::arm::GICEnableInterrupt(30);

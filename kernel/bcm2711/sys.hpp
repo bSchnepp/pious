@@ -8,6 +8,7 @@ extern "C"
 
 VOID InitCoreSystems();
 VOID InitSystem();
+
 VOID WritePixel(UINT32 Col, UINT32 Row, UINT8 ColorIndex);
 
 }
